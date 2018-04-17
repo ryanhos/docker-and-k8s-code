@@ -8,4 +8,4 @@ metadata:
 spec:
   backend:
     serviceName: my-nodeport
-    servicePort: 32000
+    servicePort: 80
