@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 if [ -z "${1}" ]; then
 	echo "Please pass the GKE Instance name as the sole argument."
 	exit 1
@@ -17,6 +19,7 @@ gcloud compute target-pools create ${USER_SLUG}-github-pr-target-pool --region=$
 gcloud compute target-pools add-instances ${USER_SLUG}-github-pr-target-pool --region=${REGION} --instances=${INSTANCE_NAME}  --instances-zone=${ZONE}
 
 gcloud compute forwarding-rules create ${USER_SLUG}-forwarding-rule80 --address $USER_SLUG --ports=80 --target-pool=${USER_SLUG}-github-pr-target-pool --target-pool-region=${REGION} --region=${REGION}
+gcloud compute forwarding-rules create ${USER_SLUG}-forwarding-rule443 --address $USER_SLUG --ports=443 --target-pool=${USER_SLUG}-github-pr-target-pool --target-pool-region=${REGION} --region=${REGION}
 
 # Allow health checks to nginx ingress health port
 #gcloud compute firewall-rules create allow-health-check \
@@ -31,3 +34,4 @@ gcloud dns --project=${PROJECT_ID} record-sets transaction add ${MY_IP} --name=$
 gcloud dns --project=${PROJECT_ID} record-sets transaction execute --zone=${DNS_ZONE}
 
 echo "Your IP is: ${MY_IP}"
+echo "Your LB address is: http://${USER_SLUG}.ryanh.org"
