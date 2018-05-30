@@ -53,12 +53,12 @@ spec:
           env:
           # You'll need to change all of these values for use beyond this example.
           - name: OAUTH2_PROXY_CLIENT_ID
-            value: d82c2d216220bf82ad7e
+            value: ##CLIENT_ID##
           - name: OAUTH2_PROXY_CLIENT_SECRET
-            value: 55bc1af6cb521a022d29d4ecdeca01de860ccafa
+            value: ##CLIENT_SECRET##
           # python -c 'import os,base64; print base64.b64encode(os.urandom(16))'
           - name: OAUTH2_PROXY_COOKIE_SECRET
-            value: wRt7p2uX5DJJRDjoO4Pifg==
+            value: ##COOKIE_SECRET##
 ---
 apiVersion: v1
 kind: Service
