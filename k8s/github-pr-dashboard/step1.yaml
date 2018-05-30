@@ -1,0 +1,59 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: "pr-dashboard-deployment"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: "github-pr-dashboard"
+    spec:
+      containers:
+        - name: pr-dashboard
+          image:  us.gcr.io/round-ring-181705/github-pr-dashboard:latest
+          ports:
+          - containerPort: 8080
+          env:
+          - name: DASHBOARD_NAME
+            value: "Dashboard"
+          - name: REPOSITORY_NAMES
+            value: "kubernetes/ingress-nginx kubernetes/examples"
+          - name: GROUP_BY_REPO
+            value: "false"
+          - name: GITHUB_TOKEN
+            value: "02f488abd96e61c685c93383644a467186bb193d"
+          imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "pr-dashboard-service"
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  selector:
+    app: "github-pr-dashboard"
+  sessionAffinity: None
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "pr-dashboard-ingress"
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  backend:
+    serviceName: pr-dashboard-service
+    servicePort: 80
+  rules:
+  - host: ryan-hochstetler.ryanh.org
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: pr-dashboard-service
+          servicePort: 80
