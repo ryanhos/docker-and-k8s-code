@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
         - name: pr-dashboard
-          image:  us.gcr.io/round-ring-181705/github-pr-dashboard:latest
+          image:  us.gcr.io/__GOOGLE_CLOUD_PROJECET__/github-pr-dashboard:latest
           ports:
           - containerPort: 8080
           env:
