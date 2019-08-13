@@ -1,0 +1,11 @@
+FROM ubuntu:18.04
+
+# Running this all as one command, with the `rm` at the end,
+# reduces image size and layer count.
+RUN apt-get update && apt-get install -y python3.6 \
+ && rm -rf /var/lib/apt/lists/*
+
+COPY greet.py /
+
+ENTRYPOINT ["/usr/bin/python3.6", "greet.py"]
+CMD ["world"]
